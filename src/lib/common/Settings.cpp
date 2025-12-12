@@ -197,6 +197,9 @@ QVariant Settings::defaultValue(const QString &key)
   if (key == Log::File)
     return QStringLiteral("%1/%2").arg(QDir::homePath(), kDefaultLogFile);
 
+  if (key == State::File)
+    return QStringLiteral("%1/%2.state").arg(Settings::settingsPath(), kAppId);
+
   if (key == Log::Level)
     return 4; // INFO
 
@@ -219,10 +222,6 @@ QVariant Settings::defaultValue(const QString &key)
 #endif
 
     return Settings::ProcessMode::Desktop;
-  }
-
-  if (key == Daemon::LogFile) {
-    return QStringLiteral("%1/%2").arg(Settings::settingsPath(), kDaemonLogFilename);
   }
 
   if (key == Client::ScrollSpeed) {

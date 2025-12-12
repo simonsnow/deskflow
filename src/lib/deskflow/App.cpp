@@ -20,6 +20,8 @@
 #include "base/IEventQueue.h"
 #endif
 
+#include <QDir>
+#include <QFileInfo>
 #include <stdexcept>
 
 #if WINAPI_CARBON
@@ -110,12 +112,18 @@ int App::daemonMainLoop(int, const char **)
 void App::setupFileLogging()
 {
   if (Settings::value(Settings::Log::ToFile).toBool()) {
-    if (const auto file = Settings::value(Settings::Log::File).toString(); !file.isEmpty()) {
-      const auto logFile = qPrintable(file);
-      m_fileLog = new FileLogOutputter(logFile); // NOSONAR - Adopted by `Log`
-      CLOG->insert(m_fileLog);
-      LOG_DEBUG1("logging to file (%s) enabled", logFile);
+    auto file = Settings::value(Settings::Log::File).toString().trimmed();
+    if (file.isEmpty()) {
+      file = Settings::defaultValue(Settings::Log::File).toString();
+      Settings::setValue(Settings::Log::File, file);
     }
+
+    const QFileInfo logFileInfo(file);
+    QDir(logFileInfo.absolutePath()).mkpath(QStringLiteral("."));
+
+    m_fileLog = new FileLogOutputter(logFileInfo.absoluteFilePath()); // NOSONAR - Adopted by `Log`
+    CLOG->insert(m_fileLog);
+    LOG_DEBUG1("logging to file (%s) enabled", qPrintable(logFileInfo.absoluteFilePath()));
   }
 }
 

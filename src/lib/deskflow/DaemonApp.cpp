@@ -28,6 +28,8 @@
 
 #endif
 
+#include <QDir>
+#include <QFileInfo>
 #include <filesystem>
 #include <iostream>
 #include <string>
@@ -98,7 +100,6 @@ void DaemonApp::clearSettings() const
   LOG_INFO("clearing daemon settings");
   Settings::setValue(Settings::Daemon::Command, QVariant());
   Settings::setValue(Settings::Daemon::Elevate, QVariant());
-  Settings::setValue(Settings::Daemon::LogFile, QVariant());
   Settings::setValue(Settings::Daemon::LogLevel, QVariant());
 }
 
@@ -219,7 +220,15 @@ int DaemonApp::mainLoop()
 
 QString DaemonApp::logFilename()
 {
-  return Settings::value(Settings::Daemon::LogFile).toString();
+  auto file = Settings::value(Settings::Log::File).toString().trimmed();
+  if (file.isEmpty()) {
+    file = Settings::defaultValue(Settings::Log::File).toString();
+    Settings::setValue(Settings::Log::File, file);
+  }
+
+  const QFileInfo logFileInfo(file);
+  QDir(logFileInfo.absolutePath()).mkpath(QStringLiteral("."));
+  return logFileInfo.absoluteFilePath();
 }
 
 void DaemonApp::setForeground()

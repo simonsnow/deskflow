@@ -8,10 +8,13 @@
 
 #include "base/LogOutputters.h"
 #include "arch/Arch.h"
+#include "common/Constants.h"
 
 #include <iostream>
 
+#include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QString>
 #include <QTextStream>
 
@@ -122,12 +125,34 @@ FileLogOutputter::FileLogOutputter(const QString &logFile)
 
 void FileLogOutputter::setLogFilename(const QString &logFile)
 {
-  assert(logFile != nullptr);
-  m_fileName = logFile;
+  auto fileName = logFile.trimmed();
+
+  // Fallback to a sensible default if an empty or whitespace-only path is provided.
+  if (fileName.isEmpty()) {
+    fileName = QStringLiteral("%1/%2").arg(QDir::homePath(), QString::fromLatin1(kDefaultLogFile));
+  }
+
+  if (fileName.isEmpty()) {
+    qWarning("FileLogOutputter: empty log filename specified");
+    return;
+  }
+
+  m_fileName = fileName;
 }
 
 bool FileLogOutputter::write(LogLevel, const QString &message)
 {
+  if (m_fileName.isEmpty()) {
+    return false;
+  }
+
+  // Ensure directory exists
+  QFileInfo fileInfo(m_fileName);
+  QDir dir = fileInfo.absoluteDir();
+  if (!dir.exists()) {
+    dir.mkpath(".");
+  }
+
   QFile file(m_fileName);
   if (!file.open(QFile::WriteOnly | QFile::Append))
     return false;
