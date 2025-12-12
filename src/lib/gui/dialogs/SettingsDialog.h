@@ -9,6 +9,7 @@
 #pragma once
 #include <QDialog>
 
+#include "gui/TlsUtility.h"
 #include "gui/config/IServerConfig.h"
 #include "gui/core/CoreProcess.h"
 
@@ -39,7 +40,9 @@ private:
   void regenCertificates();
   void browseCertificatePath();
   void browseLogPath();
+  void browseStatePath();
   void setLogToFile(bool logToFile);
+  void setStateToFile(bool stateToFile);
   void accept() override;
   void showEvent(QShowEvent *event) override;
   bool isClientMode() const;

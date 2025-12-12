@@ -34,7 +34,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, const IServerConfig &serverConfi
   // set up the language combo
   I18N::reDetectLanguages();
   ui->comboLanguage->addItems(I18N::detectedLanguages());
-  ui->comboLanguage->setCurrentText(I18N::toNativeName(I18N::currentLanguage()));
+  ui->comboLanguage->setCurrentText(I18N::currentLanguage());
 
   updateText();
 
@@ -82,16 +82,15 @@ void SettingsDialog::initConnections() const
   connect(ui->btnTlsCertPath, &QPushButton::clicked, this, &SettingsDialog::browseCertificatePath);
   connect(ui->btnBrowseLog, &QPushButton::clicked, this, &SettingsDialog::browseLogPath);
   connect(ui->cbLogToFile, &QCheckBox::toggled, this, &SettingsDialog::setLogToFile);
+  connect(ui->btnBrowseState, &QPushButton::clicked, this, &SettingsDialog::browseStatePath);
+  connect(ui->cbStateToFile, &QCheckBox::toggled, this, &SettingsDialog::setStateToFile);
   connect(ui->comboLogLevel, &QComboBox::currentIndexChanged, this, &SettingsDialog::logLevelChanged);
-  connect(ui->comboLanguage, &QComboBox::currentTextChanged, this, [](const QString &lang) {
-    const auto shortName = I18N::nativeTo639Name(lang);
-    I18N::setLanguage(shortName);
-  });
+  connect(ui->comboLanguage, &QComboBox::currentTextChanged, I18N::instance(), &I18N::setLanguage);
 }
 
 void SettingsDialog::regenCertificates()
 {
-  if (TlsUtility::generateCertificate()) {
+  if (deskflow::gui::TlsUtility::generateCertificate()) {
     QMessageBox::information(this, tr("TLS Certificate Regenerated"), tr("TLS certificate regenerated successfully."));
     const auto certificate = Settings::value(Settings::Security::Certificate).toString();
     updateKeyLengthOnFile(certificate);
@@ -126,9 +125,25 @@ void SettingsDialog::browseLogPath()
   }
 }
 
+void SettingsDialog::browseStatePath()
+{
+  QString fileName = QFileDialog::getSaveFileName(
+      this, tr("Save state file to..."), ui->lineStateFilename->text(), "State files (*.state *.txt)"
+  );
+
+  if (!fileName.isEmpty()) {
+    ui->lineStateFilename->setText(fileName);
+  }
+}
+
 void SettingsDialog::setLogToFile(bool logToFile)
 {
   ui->widgetLogFilename->setEnabled(logToFile);
+}
+
+void SettingsDialog::setStateToFile(bool stateToFile)
+{
+  ui->widgetStateFilename->setEnabled(stateToFile);
 }
 
 void SettingsDialog::showEvent(QShowEvent *event)
@@ -164,6 +179,8 @@ void SettingsDialog::accept()
   Settings::setValue(Settings::Log::Level, ui->comboLogLevel->currentIndex());
   Settings::setValue(Settings::Log::ToFile, ui->cbLogToFile->isChecked());
   Settings::setValue(Settings::Log::File, ui->lineLogFilename->text());
+  Settings::setValue(Settings::State::ToFile, ui->cbStateToFile->isChecked());
+  Settings::setValue(Settings::State::File, ui->lineStateFilename->text());
   Settings::setValue(Settings::Daemon::Elevate, ui->cbElevateDaemon->isChecked());
   Settings::setValue(Settings::Gui::Autohide, ui->cbAutoHide->isChecked());
   Settings::setValue(Settings::Gui::AutoUpdateCheck, ui->cbAutoUpdate->isChecked());
@@ -177,7 +194,7 @@ void SettingsDialog::accept()
   Settings::setValue(Settings::Gui::SymbolicTrayIcon, ui->rbIconMono->isChecked());
   Settings::setValue(Settings::Security::CheckPeers, ui->cbRequireClientCert->isChecked());
   Settings::setValue(Settings::Client::ScrollSpeed, ui->sbScrollSpeed->value());
-  Settings::setValue(Settings::Core::Language, I18N::nativeTo639Name(ui->comboLanguage->currentText()));
+  Settings::setValue(Settings::Core::Language, ui->comboLanguage->currentText());
   Settings::setValue(Settings::Log::GuiDebug, ui->cbGuiDebug->isChecked());
   Settings::setValue(Settings::Core::UseWlClipboard, ui->cbUseWlClipboard->isChecked());
 
@@ -198,6 +215,8 @@ void SettingsDialog::loadFromConfig()
   ui->comboLogLevel->setCurrentIndex(Settings::value(Settings::Log::Level).toInt());
   ui->cbLogToFile->setChecked(Settings::value(Settings::Log::ToFile).toBool());
   ui->lineLogFilename->setText(Settings::value(Settings::Log::File).toString());
+  ui->cbStateToFile->setChecked(Settings::value(Settings::State::ToFile).toBool());
+  ui->lineStateFilename->setText(Settings::value(Settings::State::File).toString());
   ui->cbAutoHide->setChecked(Settings::value(Settings::Gui::Autohide).toBool());
   ui->cbPreventSleep->setChecked(Settings::value(Settings::Core::PreventSleep).toBool());
   ui->cbLanguageSync->setChecked(Settings::value(Settings::Client::LanguageSync).toBool());
@@ -235,9 +254,11 @@ void SettingsDialog::updateTlsControls()
 
   ui->comboTlsKeyLength->setCurrentText(Settings::value(Settings::Security::KeySize).toString());
 
+  const auto tlsEnabled = Settings::value(Settings::Security::TlsEnabled).toBool();
+
   ui->lineTlsCertPath->setText(certificate);
   ui->cbRequireClientCert->setChecked(Settings::value(Settings::Security::CheckPeers).toBool());
-  ui->groupSecurity->setChecked(TlsUtility::isEnabled());
+  ui->groupSecurity->setChecked(tlsEnabled);
 
   ui->groupSecurity->setEnabled(Settings::isWritable());
 
@@ -269,7 +290,7 @@ void SettingsDialog::updateKeyLengthOnFile(const QString &path)
     qFatal("tls certificate file not found: %s", qUtf8Printable(path));
   }
 
-  auto length = TlsUtility::getCertKeyLength(path);
+  auto length = deskflow::gui::TlsUtility::getCertKeyLength(path);
   auto labelIcon = QPixmap(QIcon::fromTheme(QIcon::ThemeIcon::SecurityLow).pixmap(24, 24));
   if (length == 2048)
     labelIcon = QPixmap(QIcon::fromTheme(QStringLiteral("security-medium")).pixmap(24, 24));
@@ -285,6 +306,7 @@ void SettingsDialog::updateControls()
   const bool writable = Settings::isWritable();
   const bool serviceChecked = ui->groupService->isChecked();
   const bool logToFile = ui->cbLogToFile->isChecked();
+  const bool stateToFile = ui->cbStateToFile->isChecked();
 
   ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(writable);
 
@@ -292,6 +314,7 @@ void SettingsDialog::updateControls()
   ui->lineInterface->setEnabled(writable);
   ui->comboLogLevel->setEnabled(writable);
   ui->cbLogToFile->setEnabled(writable);
+  ui->cbStateToFile->setEnabled(writable);
   ui->cbAutoHide->setEnabled(writable);
   ui->cbAutoUpdate->setEnabled(writable);
   ui->cbPreventSleep->setEnabled(writable);
@@ -319,6 +342,7 @@ void SettingsDialog::updateControls()
   ui->groupClientOptions->setEnabled(writable && isClientMode());
 
   ui->widgetLogFilename->setEnabled(writable && logToFile);
+  ui->widgetStateFilename->setEnabled(writable && stateToFile);
 
   updateTlsControls();
 }

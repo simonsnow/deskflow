@@ -464,10 +464,6 @@ Nomi validi:
         <translation>%1 si sta avviando...</translation>
     </message>
     <message>
-        <source>invalid certificate, generating a new one</source>
-        <translation type="unfinished">certificato non valido, ne viene generato uno nuovo</translation>
-    </message>
-    <message>
         <source>%1 will retry in a moment...</source>
         <translation>%1 riproverà tra un momento...</translation>
     </message>
@@ -535,6 +531,10 @@ Nomi validi:
     <message>
         <source>The Core executable could not be successfully started, although it does exist. Please check if you have sufficient permissions to run this program.</source>
         <translation type="unfinished">Non è stato possibile avviare correttamente l&apos;eseguibile Core, sebbene esista. Verifica di disporre delle autorizzazioni necessarie per eseguire questo programma.</translation>
+    </message>
+    <message>
+        <source>invalid certificate, generating a new one</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -714,21 +714,21 @@ Nomi validi:
     <message>
         <source>failed to read key from certificate file: %1</source>
         <extracomment>%1 will be replaced by the certificate path</extracomment>
-        <translation type="unfinished">impossibile leggere la chiave dal file del certificato: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>failed to parse certificate file: %1</source>
         <extracomment>%1 will be replaced by the certificate path</extracomment>
-        <translation type="unfinished">impossibile analizzare il file del certificato: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>key detected is the incorrect size</source>
-        <translation type="unfinished">la chiave rilevata ha una dimensione errata</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>failed to read RSA key from certificate file: %1</source>
         <extracomment>%1 will be replaced by the certificate path</extracomment>
-        <translation type="unfinished">impossibile leggere la chiave RSA dal file del certificato: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1062,7 +1062,7 @@ L&apos;abilitazione di questa impostazione disabiliterà l&apos;interfaccia graf
     </message>
     <message>
         <source>Enable lock to computer at startup</source>
-        <translation type="unfinished">Abilita il blocco al computer all&apos;avvio</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1286,6 +1286,49 @@ L&apos;abilitazione di questa impostazione disabiliterà l&apos;interfaccia graf
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Requires the wl-clipboard package&lt;/p&gt;&lt;p&gt;When using wl-clipboard v2.2.1, there is a focus stealing bug that may make Deskflow harder to use. This has been fixed when using the wl-clipboard master branch, unless your Compositor lacks wlroots-data-control protocol support.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Richiede il pacchetto wl-clipboard&lt;/p&gt;&lt;p&gt;Quando si utilizza wl-clipboard v2.2.1, si verifica un bug di furto del focus che potrebbe rendere Deskflow più difficile da usare. Questo problema è stato risolto quando si utilizza il ramo master di wl-clipboard, a meno che il proprio compositore non supporti il ​​protocollo wlroots-data-control.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Write state to file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>State file path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The state file contains &quot;1&quot; when this instance is active (has control), otherwise &quot;0&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save state file to...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TlsCertificate</name>
+    <message>
+        <source>could not read from default certificate file</source>
+        <translation type="vanished">Impossibile leggere dal file di certificato predefinito</translation>
+    </message>
+    <message>
+        <source>could not load default certificate file to memory</source>
+        <translation type="vanished">Impossibile caricare il file di certificato predefinito in memoria</translation>
+    </message>
+    <message>
+        <source>default certificate key file does not contain valid public key</source>
+        <translation type="vanished">Il file della chiave del certificato predefinito non contiene una chiave pubblica valida</translation>
+    </message>
+    <message>
+        <source>public key in default certificate key file is not RSA or DSA</source>
+        <translation type="vanished">La chiave pubblica nel file della chiave del certificato predefinito non è RSA o DSA</translation>
+    </message>
+    <message>
+        <source>public key in default certificate key file is too small</source>
+        <translation type="vanished">La chiave pubblica nel file della chiave del certificato predefinito è troppo piccola</translation>
     </message>
 </context>
 <context>

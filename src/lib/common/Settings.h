@@ -49,6 +49,7 @@ public:
     inline static const auto PreventSleep = QStringLiteral("core/preventSleep");
     inline static const auto ProcessMode = QStringLiteral("core/processMode");
     inline static const auto ScreenName = QStringLiteral("core/screenName");
+    inline static const auto StartedBefore = QStringLiteral("core/startedBefore");
     inline static const auto UpdateUrl = QStringLiteral("core/updateUrl");
     inline static const auto Display = QStringLiteral("core/display");
     inline static const auto UseHooks = QStringLiteral("core/useHooks");
@@ -82,6 +83,11 @@ public:
     inline static const auto Level = QStringLiteral("log/level");
     inline static const auto ToFile = QStringLiteral("log/toFile");
     inline static const auto GuiDebug = QStringLiteral("log/guiDebug");
+  };
+  struct State
+  {
+    inline static const auto File = QStringLiteral("state/file");
+    inline static const auto ToFile = QStringLiteral("state/toFile");
   };
   struct Security
   {
@@ -192,6 +198,7 @@ private:
     , Settings::Core::PreventSleep
     , Settings::Core::ProcessMode
     , Settings::Core::ScreenName
+    , Settings::Core::StartedBefore
     , Settings::Core::UpdateUrl
     , Settings::Core::Display
     , Settings::Core::UseHooks
@@ -221,6 +228,8 @@ private:
     , Settings::Security::TlsEnabled
     , Settings::Server::ExternalConfig
     , Settings::Server::ExternalConfigFile
+    , Settings::State::File
+    , Settings::State::ToFile
   };
 
   // When checking the default values this list contains the ones that default to false.
@@ -229,12 +238,14 @@ private:
     , Settings::Gui::AutoStartCore
     , Settings::Gui::ShownFirstConnectedMessage
     , Settings::Gui::ShownServerFirstStartMessage
+    , Settings::Core::StartedBefore
     , Settings::Core::PreventSleep
     , Settings::Core::UseWlClipboard
     , Settings::Server::ExternalConfig
     , Settings::Client::InvertScrollDirection
     , Settings::Log::ToFile
     , Settings::Log::GuiDebug
+    , Settings::State::ToFile
   };
 
   // When checking the default values this list contains the ones that default to true.

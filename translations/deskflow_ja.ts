@@ -308,10 +308,6 @@ Do you want to connect to the server?
         <translation>現在のTLS鍵長が許容される長さより小さいため、新しい2048ビット長の鍵を生成します。</translation>
     </message>
     <message>
-        <source>invalid certificate, generating a new one</source>
-        <translation type="unfinished">無効な証明書、新しい証明書を生成しています</translation>
-    </message>
-    <message>
         <source>A new version v%1 is available</source>
         <translation>新しいバージョン(v%1)が利用できます</translation>
     </message>
@@ -535,6 +531,10 @@ Valid names:
         <source>The Core executable could not be successfully started, although it does exist. Please check if you have sufficient permissions to run this program.</source>
         <translation>コア実行ファイルは存在していますが、起動できませんでした。このプログラムを実行するのに十分な権限があることを確認してください。</translation>
     </message>
+    <message>
+        <source>invalid certificate, generating a new one</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NewScreenWidget</name>
@@ -715,21 +715,21 @@ Valid names:
     <message>
         <source>failed to read key from certificate file: %1</source>
         <extracomment>%1 will be replaced by the certificate path</extracomment>
-        <translation type="unfinished">証明書ファイルからキーを読み取ることができませんでした: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>failed to parse certificate file: %1</source>
         <extracomment>%1 will be replaced by the certificate path</extracomment>
-        <translation type="unfinished">証明書ファイルの解析に失敗しました: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>key detected is the incorrect size</source>
-        <translation type="unfinished">検出されたキーのサイズが正しくありません</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>failed to read RSA key from certificate file: %1</source>
         <extracomment>%1 will be replaced by the certificate path</extracomment>
-        <translation type="unfinished">証明書ファイルから RSA キーを読み取ることができませんでした: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1063,7 +1063,7 @@ Enabling this setting will disable the server config GUI.</source>
     </message>
     <message>
         <source>Enable lock to computer at startup</source>
-        <translation>起動時にコンピューター間移動のロックを有効にする</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1287,6 +1287,49 @@ Enabling this setting will disable the server config GUI.</source>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Requires the wl-clipboard package&lt;/p&gt;&lt;p&gt;When using wl-clipboard v2.2.1, there is a focus stealing bug that may make Deskflow harder to use. This has been fixed when using the wl-clipboard master branch, unless your Compositor lacks wlroots-data-control protocol support.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;wl-clipboard パッケージが必要です。&lt;/p&gt;&lt;p&gt;wl-clipboard v2.2.1 を使用すると、フォーカス盗用のバグにより Deskflow の使い勝手が悪くなる可能性があります。この問題は wl-clipboard のマスターブランチで修正されていますが、使用しているコンポジターが wlroots-data-control プロトコルに対応している必要があります。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Write state to file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>State file path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The state file contains &quot;1&quot; when this instance is active (has control), otherwise &quot;0&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save state file to...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TlsCertificate</name>
+    <message>
+        <source>could not read from default certificate file</source>
+        <translation type="vanished">既定の証明書ファイルが読み取れませんでした</translation>
+    </message>
+    <message>
+        <source>could not load default certificate file to memory</source>
+        <translation type="vanished">既定の証明書ファイルをメモリーに読み込めませんでした</translation>
+    </message>
+    <message>
+        <source>default certificate key file does not contain valid public key</source>
+        <translation type="vanished">既定の証明書鍵ファイルに正常な公開鍵が含まれていません</translation>
+    </message>
+    <message>
+        <source>public key in default certificate key file is not RSA or DSA</source>
+        <translation type="vanished">既定の証明書鍵ファイル内の公開鍵がRSAでもDSAでもありません</translation>
+    </message>
+    <message>
+        <source>public key in default certificate key file is too small</source>
+        <translation type="vanished">既定の証明書鍵ファイル内の公開鍵が小さすぎます</translation>
     </message>
 </context>
 <context>

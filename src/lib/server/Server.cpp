@@ -17,6 +17,7 @@
 #include "deskflow/PacketStreamFilter.h"
 #include "deskflow/ProtocolTypes.h"
 #include "deskflow/Screen.h"
+#include "deskflow/StateFileWriter.h"
 #include "deskflow/StreamChunker.h"
 #include "net/TCPSocket.h"
 #include "server/ClientListener.h"
@@ -134,10 +135,11 @@ Server::Server(ServerConfig &config, PrimaryClient *primaryClient, deskflow::Scr
   if (!m_disableLockToScreen && (m_primaryClient->getToggleMask() & KeyModifierScrollLock)) {
     LOG_NOTE("scroll lock is on, locking cursor to screen");
     m_lockedToScreen = true;
-  } else if (m_defaultLockToScreenState) {
-    LOG_NOTE("default screen lock is on, locking cursor to screen");
-    m_lockedToScreen = true;
   }
+
+  // Initialize state file - server starts as active
+  LOG_DEBUG1("server initialized, setting initial state file to 1");
+  deskflow::StateFileWriter::writeState(true);
 }
 
 Server::~Server()
@@ -340,9 +342,7 @@ bool Server::isLockedToScreen() const
 
   // locked if we say we're locked
   if (isLockedToScreenServer()) {
-    if (!m_defaultLockToScreenState) {
-      LOG_NOTE("cursor is locked to screen, check scroll lock key");
-    }
+    LOG_NOTE("cursor is locked to screen, check scroll lock key");
     return true;
   }
 
@@ -460,6 +460,15 @@ void Server::switchScreen(BaseClientProxy *dst, int32_t x, int32_t y, bool forSc
 
     // enter new screen
     m_active->enter(x, y, m_seqNum, m_primaryClient->getToggleMask(), forScreensaver);
+
+    // Update state file based on whether we're on the primary or a client
+    if (m_active == m_primaryClient) {
+      LOG_DEBUG1("switched to primary screen, updating state file to 1");
+      deskflow::StateFileWriter::writeState(true);
+    } else {
+      LOG_DEBUG1("switched to client screen, updating state file to 0");
+      deskflow::StateFileWriter::writeState(false);
+    }
 
     if (m_enableClipboard) {
       // send the clipboard data to new active screen
@@ -1103,8 +1112,6 @@ void Server::processOptions()
       m_switchNeedsAlt = (value != 0);
     } else if (id == kOptionRelativeMouseMoves) {
       newRelativeMoves = (value != 0);
-    } else if (id == kOptionDefaultLockToScreenState) {
-      m_defaultLockToScreenState = (value != 0);
     } else if (id == kOptionDisableLockToScreen) {
       m_disableLockToScreen = (value != 0);
     } else if (id == kOptionClipboardSharing) {
@@ -2048,6 +2055,10 @@ void Server::forceLeaveClient(const BaseClientProxy *client)
     // screen saver)
     if (m_activeSaver == nullptr) {
       m_primaryClient->enter(m_x, m_y, m_seqNum, m_primaryClient->getToggleMask(), false);
+
+      // Update state file - back to primary
+      LOG_DEBUG1("force leave client, returning to primary, updating state file to 1");
+      deskflow::StateFileWriter::writeState(true);
     }
   }
 

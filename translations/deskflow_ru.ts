@@ -310,10 +310,6 @@ Do you want to connect to the server?
         <translation>Ваш нынешний TLS ключ меньше чем минимальный разрешимый размер , Новый ключ 2048-бит ключ будет сгенерирован.</translation>
     </message>
     <message>
-        <source>invalid certificate, generating a new one</source>
-        <translation type="unfinished">недействительный сертификат, генерация нового</translation>
-    </message>
-    <message>
         <source>A new version v%1 is available</source>
         <translation>Новая версия %1 доступна</translation>
     </message>
@@ -395,7 +391,7 @@ Do you want to connect to the server?
     </message>
     <message>
         <source>%1 will retry in a moment...</source>
-        <translation>%1 пробует переподкючиться...</translation>
+        <translation>%1 попробюуйте ещё раз через несколько секунд...</translation>
     </message>
     <message>
         <source>%1 is stopping...</source>
@@ -538,6 +534,10 @@ Valid names:
     <message>
         <source>The Core executable could not be successfully started, although it does exist. Please check if you have sufficient permissions to run this program.</source>
         <translation type="unfinished">Не удалось запустить исполняемый файл Core, хотя он существует. Проверьте, есть ли у вас достаточные права для запуска этой программы.</translation>
+    </message>
+    <message>
+        <source>invalid certificate, generating a new one</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -717,21 +717,21 @@ Valid names:
     <message>
         <source>failed to read key from certificate file: %1</source>
         <extracomment>%1 will be replaced by the certificate path</extracomment>
-        <translation type="unfinished">не удалось прочитать ключ из файла сертификата: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>failed to parse certificate file: %1</source>
         <extracomment>%1 will be replaced by the certificate path</extracomment>
-        <translation type="unfinished">не удалось проанализировать файл сертификата: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>key detected is the incorrect size</source>
-        <translation type="unfinished">обнаружен ключ неправильного размера</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>failed to read RSA key from certificate file: %1</source>
         <extracomment>%1 will be replaced by the certificate path</extracomment>
-        <translation type="unfinished">не удалось прочитать ключ RSA из файла сертификата: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1066,7 +1066,7 @@ Enabling this setting will disable the server config GUI.</source>
     </message>
     <message>
         <source>Enable lock to computer at startup</source>
-        <translation type="unfinished">Включить блокировку компьютера при запуске</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1291,6 +1291,49 @@ Enabling this setting will disable the server config GUI.</source>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Requires the wl-clipboard package&lt;/p&gt;&lt;p&gt;When using wl-clipboard v2.2.1, there is a focus stealing bug that may make Deskflow harder to use. This has been fixed when using the wl-clipboard master branch, unless your Compositor lacks wlroots-data-control protocol support.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Для этого необходим пакет wl-clipboard.&lt;/p&gt;&lt;p&gt;Когда ты используешь wl-clipboard v2.2.1. Возникает ошибка перехвата фокуса, которая мешает использовать deskflowю. Это фиксется если использовать wl-clipboard из ветки master, если только ваш Compositor не поддерживает протокол wlroots-data-control.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Write state to file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>State file path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The state file contains &quot;1&quot; when this instance is active (has control), otherwise &quot;0&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save state file to...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TlsCertificate</name>
+    <message>
+        <source>could not read from default certificate file</source>
+        <translation type="vanished">Не смог прочитать стандартный файл сертификата</translation>
+    </message>
+    <message>
+        <source>could not load default certificate file to memory</source>
+        <translation type="vanished">Не получилось загрузить стандартный файл сертификата в память</translation>
+    </message>
+    <message>
+        <source>default certificate key file does not contain valid public key</source>
+        <translation type="vanished">Стандартный файл сертификата не содержит действительного публичного ключа</translation>
+    </message>
+    <message>
+        <source>public key in default certificate key file is not RSA or DSA</source>
+        <translation type="vanished">Публичный ключ в стандартном файле сертефеката не является RSA или DSA</translation>
+    </message>
+    <message>
+        <source>public key in default certificate key file is too small</source>
+        <translation type="vanished">Публичный ключ в стандартном файле сертификата слишком мал</translation>
     </message>
 </context>
 <context>

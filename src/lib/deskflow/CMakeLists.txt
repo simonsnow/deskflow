@@ -77,6 +77,8 @@ add_library(${lib_name} STATIC ${PLATFORM_CODE}
   ScreenException.h
   ServerApp.cpp
   ServerApp.h
+  StateFileWriter.cpp
+  StateFileWriter.h
   StreamChunker.cpp
   StreamChunker.h
   languages/LanguageManager.cpp

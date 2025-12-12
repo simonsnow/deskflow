@@ -19,6 +19,7 @@
 #include "deskflow/PacketStreamFilter.h"
 #include "deskflow/ProtocolUtil.h"
 #include "deskflow/Screen.h"
+#include "deskflow/StateFileWriter.h"
 #include "deskflow/StreamChunker.h"
 #include "net/IDataSocket.h"
 #include "net/ISocketFactory.h"
@@ -200,6 +201,10 @@ void Client::enter(int32_t xAbs, int32_t yAbs, uint32_t, KeyModifierMask mask, b
   m_active = true;
   m_screen->mouseMove(xAbs, yAbs);
   m_screen->enter(mask);
+
+  // Update state file - client is now active
+  LOG_DEBUG1("client active, updating state file to 1");
+  deskflow::StateFileWriter::writeState(true);
 }
 
 bool Client::leave()
@@ -207,6 +212,10 @@ bool Client::leave()
   m_active = false;
 
   m_screen->leave();
+
+  // Update state file - client is no longer active
+  LOG_DEBUG1("client inactive, updating state file to 0");
+  deskflow::StateFileWriter::writeState(false);
 
   if (m_enableClipboard) {
     // send clipboards that we own and that have changed
